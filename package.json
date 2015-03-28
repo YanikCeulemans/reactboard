@@ -1,0 +1,12 @@
+{
+  "main": "index.html",
+  "name": "nw-demo",
+  "dependencies": {
+    "howler": "^1.1.25",
+    "react": "^0.13.1"
+  },
+  "devDependencies": {
+    "coffee-reactify": "^3.0.0",
+    "gulp": "^3.8.11"
+  }
+}
