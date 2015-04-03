@@ -1,13 +1,9 @@
 React = require "react"
-TestComponent = require "./test.coffee"
-SoundCard = require "./soundcard.coffee"
+SoundBoard = require "./soundboard.coffee"
+requestQ = require "./superagentQ.coffee"
+ContextMenu = require "./contextMenu.coffee"
 
-SimpleComponent = React.createClass
-  render: ->
-    <div className="simple-component">
-      {<h1>A Component is I</h1> if @props.showTitle}
-      <hr />
-      {<p key={n}>This line has been printed {n} times</p> for n in [1..5]}
-    </div>
-    
-React.render(<SoundCard audiosrc="/media/samples/kick.mp3" />, document.getElementById('react-anchor'))
+requestQ.get("/data/samples.json").then (response) ->
+  React.render <SoundBoard samples={response.data} />, document.getElementById "react-anchor"
+, (err) ->
+  console.log "error occurred while trying to fetch data: ", err
