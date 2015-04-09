@@ -14,22 +14,37 @@ ContextMenu = React.createClass
       width: "24px"
       height: "24px"
       
+    containerStyles:
+      position: "relative"
+    
+    popupStyles:
+      position: "absolute"
+      width: "100px"
+      height: "50px"
+      border: "1px solid black"
+      
+  template: (styles) ->
+    <div style={styles.popupStyles}>Hi, i'm a popup!</div>
+    
+  compileTemplate: (container) ->
+    template = @template @styles
+    React.render template, container
+    
   handleClick: (e) ->
     e.stopPropagation()
-    
-  bindKey: (e) ->
-    e.stopPropagation()
+    container = document.querySelector ".popup-container"
+    @compileTemplate container
     
   componentDidMount: ->
-    @refs.testref.getDOMNode().onclick = @bindKey
-    
-    $(@refs.dropdownBtn.getDOMNode()).dropdown
-      hover: false
-      constrain_width: no
-    
+    bodyContainer = document.querySelector("body")
+    if !bodyContainer.querySelector ".popup-container"
+      popupContainer = document.createElement "div"
+      popupContainer.setAttribute "class", "popup-container"
+      bodyContainer.appendChild(popupContainer)
+        
   render: ->
-    <div>
-      <div ref="dropdownBtn" className="waves-effect" style={@styles.contextBtnStyles} onClick={@handleClick} data-activates="dropdown1">
+    <div style={@styles.containerStyles}>
+      <div ref="dropdownBtn" className="waves-effect" style={@styles.contextBtnStyles} onClick={@handleClick}>
         <div className="svg-ic_more_vert_24px" style={@styles.iconStyles}></div>
       </div>
       <ul id="dropdown1" className="dropdown-content">

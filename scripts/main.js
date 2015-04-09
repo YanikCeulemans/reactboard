@@ -24382,28 +24382,50 @@ ContextMenu = React.createClass({
     iconStyles: {
       width: "24px",
       height: "24px"
+    },
+    containerStyles: {
+      position: "relative"
+    },
+    popupStyles: {
+      position: "absolute",
+      width: "100px",
+      height: "50px",
+      border: "1px solid black"
     }
   },
-  handleClick: function(e) {
-    return e.stopPropagation();
+  template: function(styles) {
+    return React.createElement("div", {
+      "style": styles.popupStyles
+    }, "Hi, i\'m a popup!");
   },
-  bindKey: function(e) {
-    return e.stopPropagation();
+  compileTemplate: function(container) {
+    var template;
+    template = this.template(this.styles);
+    return React.render(template, container);
+  },
+  handleClick: function(e) {
+    var container;
+    e.stopPropagation();
+    container = document.querySelector(".popup-container");
+    return this.compileTemplate(container);
   },
   componentDidMount: function() {
-    this.refs.testref.getDOMNode().onclick = this.bindKey;
-    return $(this.refs.dropdownBtn.getDOMNode()).dropdown({
-      hover: false,
-      constrain_width: false
-    });
+    var bodyContainer, popupContainer;
+    bodyContainer = document.querySelector("body");
+    if (!bodyContainer.querySelector(".popup-container")) {
+      popupContainer = document.createElement("div");
+      popupContainer.setAttribute("class", "popup-container");
+      return bodyContainer.appendChild(popupContainer);
+    }
   },
   render: function() {
-    return React.createElement("div", null, React.createElement("div", {
+    return React.createElement("div", {
+      "style": this.styles.containerStyles
+    }, React.createElement("div", {
       "ref": "dropdownBtn",
       "className": "waves-effect",
       "style": this.styles.contextBtnStyles,
-      "onClick": this.handleClick,
-      "data-activates": "dropdown1"
+      "onClick": this.handleClick
     }, React.createElement("div", {
       "className": "svg-ic_more_vert_24px",
       "style": this.styles.iconStyles
